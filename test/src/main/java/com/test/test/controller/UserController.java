@@ -22,8 +22,9 @@ import com.test.test.controller.dto.UserDto;
 import com.test.test.controller.dto.UserUpdateDto;
 import com.test.test.model.User;
 import com.test.test.repository.UserRepository;
+import com.test.test.service.ValidationService;
 import com.test.test.validation.BusinessException;
-import com.test.test.validation.UserValidation;
+import com.test.test.validation.IUserValidation;
 
 @RestController
 @RequestMapping("/user") // endpoint, when used you can define the HTTP verb post or get
@@ -32,16 +33,22 @@ public class UserController {
 	@Autowired // wired, link
 	private UserRepository userRepository;
 
+	@Autowired
+	private ValidationService validationService;
+
 	//ok
 	@GetMapping
-	public List<UserDto> listUser(@RequestBody(required = false) User user) {
+	public List<UserDto> listUser(@RequestBody(required = false) User user) 
+	{
 		return UserDto.convert(userRepository.findAll());
 	}
 
-	//ok
+	//almost - not valid yet
 	@PostMapping
-	public ResponseEntity<UserDto> saveUser(@RequestBody @Valid UserDto userDto, UserValidation userValidation) throws JSONException, Exception, BusinessException {
-		userValidation.validUser(userDto);
+	public ResponseEntity<UserDto> saveUser(@RequestBody UserDto userDto) 
+	throws BusinessException 
+	{
+		validationService.validationUser(userDto);
 		User user = userDto.convert();
 		userRepository.save(user);
 		return ResponseEntity.status(HttpStatus.CREATED).body(new UserDto(user));
@@ -49,14 +56,16 @@ public class UserController {
 
 	//ok
 	@GetMapping("/{id}") // between braces, part of the url is dynamic, in this case: {id}
-	public ResponseEntity<User> searchUserId(@PathVariable Long id) {
+	public ResponseEntity<User> searchUserId(@PathVariable Long id) 
+	{
 		return userRepository.findById(id).map(resp -> ResponseEntity.ok(resp))
 		        .orElse(ResponseEntity.notFound().build());
 	}
 
 	//ok
 	@GetMapping("/cpf/{cpf}")
-	public ResponseEntity<User> searchUserCpf(@PathVariable Long cpf) {
+	public ResponseEntity<User> searchUserCpf(@PathVariable Long cpf) 
+	{
 		return userRepository.findByCpf(cpf).map(resp -> ResponseEntity.ok(resp))
 		         .orElse(ResponseEntity.notFound().build());
 	}
@@ -65,17 +74,18 @@ public class UserController {
 	@PutMapping("/{id}")
 	@Transactional
 	public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody @Valid UserDto userDto,
-			UserUpdateDto userUpdateDto, UserValidation userValidation) throws JSONException, BusinessException 
+			UserUpdateDto userUpdateDto, IUserValidation userValidation) throws JSONException, BusinessException 
 	{ 
 		userRepository.findById(id);
-		userValidation.validUser(userDto);
+		validationService.validationUser(userDto);
 		//userRepository.save(user);
 		return ResponseEntity.ok(new UserDto(userDto.update(id, userRepository)));
 	}
 
     //ok
 	@DeleteMapping("/{id}")
-	public void remove(@PathVariable Long id) {
+	public void remove(@PathVariable Long id) 
+	{
 		userRepository.deleteById(id);
 	}	
 }
