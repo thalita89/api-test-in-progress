@@ -8,5 +8,7 @@ public class BusinessException extends JSONException {//checked
 
 	public BusinessException(String message) {
 		super(message);
+		
 	}
+	
 }

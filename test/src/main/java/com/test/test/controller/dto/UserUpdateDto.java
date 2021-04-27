@@ -1,13 +1,11 @@
 package com.test.test.controller.dto;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import com.test.test.model.User;
 import com.test.test.repository.UserRepository;
 
-public class UserDto {
+public class UserUpdateDto {
 
 	private Long id;
 	private String userName;
@@ -15,11 +13,11 @@ public class UserDto {
 	private Long cpf;
 	private LocalDate dateOfBirth;
 
-	public UserDto() {
+	public UserUpdateDto() {
 
 	}
 	// constructor (used to not need to generate the setters)
-	public UserDto(User user) {
+	public UserUpdateDto(User user) {
 		this.id = user.getId();
 		this.userName = user.getUserName();
 		this.emailAddresses = user.getEmailAddresses();
@@ -27,7 +25,6 @@ public class UserDto {
 		this.dateOfBirth = user.getDateOfBirth();
 	}
 
-	// don't need setters, because this is provided by user class
 	public Long getId() {
 		return id;
 	}
@@ -46,22 +43,6 @@ public class UserDto {
 
 	public LocalDate getDateOfBirth() {
 		return dateOfBirth;
-	}
-
-	//from user constructor
-	public User convert() {
-		return new User(userName, emailAddresses, cpf, dateOfBirth);
-	}
-	
-	//SERVICE
-	//from user constructor
-	// Java8
-	// map - to convert from UserDto to User
-	// UserDto::new - calls the constructor that takes the user as a parameter
-	// collect - converted as list
-	// static - access without the class having to be instantiated
-	public static List<UserDto> convert(List<User> users) {
-		return users.stream().map(UserDto::new).collect(Collectors.toList());
 	}
 
 	public User update(Long id, UserRepository userRepository) {
