@@ -3,9 +3,7 @@ package com.test.test.controller;
 import java.util.List;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 
-import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.test.test.controller.dto.UserDto;
-import com.test.test.controller.dto.UserUpdateDto;
 import com.test.test.model.User;
 import com.test.test.repository.UserRepository;
 import com.test.test.service.ValidationService;
@@ -43,10 +40,10 @@ public class UserController {
 		return UserDto.convert(userRepository.findAll());
 	}
 
-	//almost - not valid yet
+	//ok
 	@PostMapping
 	public ResponseEntity<UserDto> saveUser(@RequestBody UserDto userDto) 
-	throws BusinessException 
+			throws BusinessException 
 	{
 		validationService.validationUser(userDto);
 		User user = userDto.convert();
@@ -73,12 +70,11 @@ public class UserController {
 	//error
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody @Valid UserDto userDto,
-			UserUpdateDto userUpdateDto, IUserValidation userValidation) throws JSONException, BusinessException 
+	public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto userDto, IUserValidation userValidation) 
+					throws BusinessException 
 	{ 
 		userRepository.findById(id);
 		validationService.validationUser(userDto);
-		//userRepository.save(user);
 		return ResponseEntity.ok(new UserDto(userDto.update(id, userRepository)));
 	}
 

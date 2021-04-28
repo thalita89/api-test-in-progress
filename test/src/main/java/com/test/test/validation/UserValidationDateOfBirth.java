@@ -5,6 +5,9 @@ import java.time.Period;
 
 import com.test.test.controller.dto.UserDto;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class UserValidationDateOfBirth implements IUserValidation {
 
 	public void validatedUser(UserDto userDto)  
