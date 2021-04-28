@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class User {
@@ -23,9 +24,8 @@ public class User {
 	private LocalDate dateOfBirth;
 	
 	//client by wallet 
-//	@OneToOne
-//	@JoinColumn(name = "wallet_id", unique = true, nullable = false)
-//	private Wallet wallet;
+	@OneToOne(mappedBy = "user")
+	private Wallet wallet;
 	
 	//constructor default
 	public User() {

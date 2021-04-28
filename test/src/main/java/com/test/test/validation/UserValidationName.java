@@ -6,6 +6,8 @@ import java.util.regex.Pattern;
 
 import com.test.test.controller.dto.UserDto;
 
+import org.springframework.stereotype.Component;
+@Component
 public class UserValidationName implements IUserValidation {
 
 	public void validatedUser(UserDto userDto) 
