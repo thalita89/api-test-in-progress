@@ -71,7 +71,6 @@ public class UserDto {
 		user.setEmailAddresses(this.emailAddresses);
 		user.setCpf(this.cpf);
 		user.setDateOfBirth(this.dateOfBirth);
-
 		return user;
 	}
 	

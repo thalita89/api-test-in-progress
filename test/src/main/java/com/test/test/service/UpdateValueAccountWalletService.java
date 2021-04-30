@@ -29,7 +29,6 @@ public class UpdateValueAccountWalletService {
 	public Wallet update(Long id, WalletRepository walletRepository) {
 		Wallet wallet = walletRepository.getOne(id);
 		wallet.setValueAccount(this.valueAccount);
-
 		return wallet;
 	}
 

@@ -20,7 +20,6 @@ public class UserUpdateService {
 		user.setEmailAddresses(this.emailAddresses);
 		user.setCpf(this.cpf);
 		user.setDateOfBirth(this.dateOfBirth);
-
 		return user;
 	}
 
