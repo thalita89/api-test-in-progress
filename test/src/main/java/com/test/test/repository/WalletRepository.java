@@ -7,4 +7,3 @@ import com.test.test.model.Wallet;
 public interface WalletRepository extends JpaRepository<Wallet, Long> {
 
 }
-	

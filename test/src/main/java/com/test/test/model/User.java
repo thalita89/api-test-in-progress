@@ -1,13 +1,14 @@
 package com.test.test.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class User {
@@ -22,17 +23,21 @@ public class User {
 	@Column(unique = true)
 	private Long cpf;
 	private LocalDate dateOfBirth;
-	
-	//client by wallet 
-	@OneToOne(mappedBy = "user")
-	private Wallet wallet;
-	
-	//constructor default
+
+	// client by wallet
+	// @OneToOne(mappedBy = "user")
+	// private Wallet wallet;
+
+	@ManyToMany
+	private List<Wallet> wallets;
+
+	// constructor default
 	public User() {
 	}
 
-	//constructor to POST
-	public User(String userName, String emailAddresses, Long cpf, LocalDate dateOfBirth) {
+	// constructor to POST
+	public User(Long id, String userName, String emailAddresses, Long cpf, LocalDate dateOfBirth) {
+		this.id = id;
 		this.userName = userName;
 		this.emailAddresses = emailAddresses;
 		this.cpf = cpf;
@@ -57,5 +62,33 @@ public class User {
 
 	public LocalDate getDateOfBirth() {
 		return dateOfBirth;
-	}	
+	}
+
+	public List<Wallet> getWallets() {
+		return wallets;
+	}
+
+	public void setWallets(List<Wallet> wallets) {
+		this.wallets = wallets;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public void setEmailAddresses(String emailAddresses) {
+		this.emailAddresses = emailAddresses;
+	}
+
+	public void setCpf(Long cpf) {
+		this.cpf = cpf;
+	}
+
+	public void setDateOfBirth(LocalDate dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
 }

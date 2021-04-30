@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import com.test.test.model.User;
 import com.test.test.repository.UserRepository;
 
+// refactor later
 public class UserDto {
 
 	private Long id;
@@ -50,7 +51,7 @@ public class UserDto {
 
 	//from user constructor
 	public User convert() {
-		return new User(userName, emailAddresses, cpf, dateOfBirth);
+		return new User(id, userName, emailAddresses, cpf, dateOfBirth);
 	}
 	
 	//SERVICE
@@ -63,9 +64,15 @@ public class UserDto {
 	public static List<UserDto> convert(List<User> users) {
 		return users.stream().map(UserDto::new).collect(Collectors.toList());
 	}
-
+	
 	public User update(Long id, UserRepository userRepository) {
-		return new User(userName, emailAddresses, cpf, dateOfBirth);
-	}
+		User user = userRepository.getOne(id);
+		user.setUserName(this.userName);
+		user.setEmailAddresses(this.emailAddresses);
+		user.setCpf(this.cpf);
+		user.setDateOfBirth(this.dateOfBirth);
 
+		return user;
+	}
+	
 }

@@ -29,48 +29,37 @@ public class WalletController {
 
 	@Autowired
 	private WalletRepository walletRepository;
-	
-	//@Autowired (latter)
-	//private WalletService walletService;
 
 	@GetMapping
-	public List<WalletDto> listWallet(@RequestBody(required = false) Wallet wallet) 
-	{
+	public List<WalletDto> listWallet(@RequestBody(required = false) Wallet wallet) {
 		return WalletDto.convert(walletRepository.findAll());
 	}
 
-	//error
 	@PostMapping
-	public ResponseEntity<WalletDto> saveWallet(@RequestBody WalletDto walletDto) 
-			throws BusinessException 
-	{
+	public ResponseEntity<WalletDto> saveWallet(@RequestBody WalletDto walletDto) throws BusinessException {
 		Wallet wallet = walletDto.convert();
 		walletRepository.save(wallet);
 		return ResponseEntity.status(HttpStatus.CREATED).body(new WalletDto(wallet));
 	}
 
-	
 	@GetMapping("/{id}")
-	public ResponseEntity<Wallet> searchWalletId(@PathVariable Long id) 
-	{
+	public ResponseEntity<Wallet> searchWalletId(@PathVariable Long id) {
 		return walletRepository.findById(id).map(resp -> ResponseEntity.ok(resp))
-		        .orElse(ResponseEntity.notFound().build());
+				.orElse(ResponseEntity.notFound().build());
 	}
 
-	//ok
-	//valueAccount
+	// update: valueAccount
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<WalletDto> updateWallet(@PathVariable Long id, @RequestBody @Valid UpdateValueAccountWalletService updateValueAccountWalletService) 
-					throws BusinessException 
-	{ 
+	public ResponseEntity<WalletDto> updateWallet(@PathVariable Long id,
+			@RequestBody @Valid UpdateValueAccountWalletService updateValueAccountWalletService)
+			throws BusinessException {
 		walletRepository.findById(id);
 		return ResponseEntity.ok(new WalletDto(updateValueAccountWalletService.update(id, walletRepository)));
 	}
 
 	@DeleteMapping("/{id}")
-	public void remove(@PathVariable Long id) 
-	{
+	public void remove(@PathVariable Long id) {
 		walletRepository.deleteById(id);
-	}	
+	}
 }

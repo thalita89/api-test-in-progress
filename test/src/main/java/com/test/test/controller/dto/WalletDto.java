@@ -10,7 +10,6 @@ public class WalletDto {
 	
 	private Long id;
 	private BigDecimal valueAccount = BigDecimal.ZERO;
-	//private User user;
 	
 	public WalletDto() {	
 	}
@@ -18,7 +17,6 @@ public class WalletDto {
 	public WalletDto(Wallet wallet) {
 		this.id = wallet.getId();
 		this.valueAccount = wallet.getValueAccount();
-		//this.user = wallet.getUser();
 	}
 	
 	public Long getId() {
