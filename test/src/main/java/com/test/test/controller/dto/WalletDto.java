@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.test.test.model.User;
 import com.test.test.model.Wallet;
 
 public class WalletDto {
@@ -33,5 +34,9 @@ public class WalletDto {
 	
 	public Wallet convert() {
 		return new Wallet(valueAccount);
+	}
+	
+	public Wallet convert(User user) {
+		return new Wallet(id, valueAccount, user);
 	}
 }

@@ -1,14 +1,14 @@
 package com.test.test.model;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class User {
@@ -25,11 +25,9 @@ public class User {
 	private LocalDate dateOfBirth;
 
 	// client by wallet
-	// @OneToOne(mappedBy = "user")
-	// private Wallet wallet;
-
-	@ManyToMany
-	private List<Wallet> wallets;
+	@OneToOne(mappedBy = "user")
+	@JoinColumn(name = "wallet_id", unique = true, nullable = false)
+	private Wallet wallet;
 
 	// constructor default
 	public User() {
@@ -64,16 +62,16 @@ public class User {
 		return dateOfBirth;
 	}
 
-	public List<Wallet> getWallets() {
-		return wallets;
-	}
-
-	public void setWallets(List<Wallet> wallets) {
-		this.wallets = wallets;
-	}
-
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Wallet getWallet() {
+		return wallet;
+	}
+
+	public void setWallet(Wallet wallet) {
+		this.wallet = wallet;
 	}
 
 	public void setUserName(String userName) {

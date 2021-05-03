@@ -75,22 +75,26 @@ public class UserController {
 		return ResponseEntity.ok(new UserDto(userDto.update(id, userRepository)));
 	}
 
-	// refactor later
+	// refactoring
 	@PutMapping("/wallet/{id}")
 	@Transactional
 	public ResponseEntity<?> saveOrUpdateUser(@PathVariable Long id, @RequestBody UserDto userDto, WalletDto walletDto)
 			throws BusinessException {
-		Wallet wallet = walletDto.convert();
-		walletRepository.save(wallet);
+		// Wallet wallet = walletDto.convert();
+		// walletRepository.save(wallet);
 
 		if (userRepository.findById(id).isPresent()) {
 			validationService.validationUser(userDto);
 			User user = userDto.update(id, userRepository);
+			Wallet wallet = walletDto.convert(user);
+			walletRepository.save(wallet);
 			return ResponseEntity.ok(new UserDto(user));
 		} else {
 			validationService.validationUser(userDto);
 			User user = userDto.convert();
 			userRepository.save(user);
+			Wallet wallet = walletDto.convert(user);
+			walletRepository.save(wallet);
 			return ResponseEntity.status(HttpStatus.CREATED).body(new UserDto(user));
 		}
 	}
