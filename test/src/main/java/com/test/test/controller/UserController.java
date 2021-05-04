@@ -18,14 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.test.test.controller.dto.UserDto;
-import com.test.test.controller.dto.WalletDto;
 import com.test.test.model.User;
-import com.test.test.model.Wallet;
 import com.test.test.repository.UserRepository;
-import com.test.test.repository.WalletRepository;
-import com.test.test.service.ValidationService;
+import com.test.test.service.UserSavedService;
+import com.test.test.service.UserUpdateService;
 import com.test.test.validation.BusinessException;
-import com.test.test.validation.IUserValidation;
 
 @RestController
 @RequestMapping("/user") // endpoint, when used you can define the HTTP verb post or get
@@ -33,12 +30,10 @@ public class UserController {
 
 	@Autowired
 	private UserRepository userRepository;
-
 	@Autowired
-	private ValidationService validationService;
-
+	private UserSavedService userSavedService;
 	@Autowired
-	private WalletRepository walletRepository;
+	private UserUpdateService userUpdateService;
 
 	@GetMapping
 	public List<UserDto> listUser(@RequestBody(required = false) User user) {
@@ -47,10 +42,8 @@ public class UserController {
 
 	@PostMapping
 	public ResponseEntity<UserDto> saveUser(@RequestBody @Valid UserDto userDto) throws BusinessException {
-		validationService.validationUser(userDto);
-		User user = userDto.convert();
-		userRepository.save(user);
-		return ResponseEntity.status(HttpStatus.CREATED).body(new UserDto(user));
+		userSavedService.userSaved(userDto);
+		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
 	@GetMapping("/{id}")
@@ -59,7 +52,7 @@ public class UserController {
 				.orElse(ResponseEntity.notFound().build());
 	}
 
-	// change latter to @RequestBody
+	// change to @RequestBody later
 	@GetMapping("/cpf/{cpf}")
 	public ResponseEntity<User> searchUserCpf(@PathVariable Long cpf) {
 		return userRepository.findByCpf(cpf).map(resp -> ResponseEntity.ok(resp))
@@ -68,35 +61,11 @@ public class UserController {
 
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto userDto,
-			IUserValidation userValidation) throws BusinessException {
-		userRepository.findById(id);
-		validationService.validationUser(userDto);
-		return ResponseEntity.ok(new UserDto(userDto.update(id, userRepository)));
-	}
-
-	// refactoring
-	@PutMapping("/wallet/{id}")
-	@Transactional
-	public ResponseEntity<?> saveOrUpdateUser(@PathVariable Long id, @RequestBody UserDto userDto, WalletDto walletDto)
+	public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto userDto)
 			throws BusinessException {
-		// Wallet wallet = walletDto.convert();
-		// walletRepository.save(wallet);
 
-		if (userRepository.findById(id).isPresent()) {
-			validationService.validationUser(userDto);
-			User user = userDto.update(id, userRepository);
-			Wallet wallet = walletDto.convert(user);
-			walletRepository.save(wallet);
-			return ResponseEntity.ok(new UserDto(user));
-		} else {
-			validationService.validationUser(userDto);
-			User user = userDto.convert();
-			userRepository.save(user);
-			Wallet wallet = walletDto.convert(user);
-			walletRepository.save(wallet);
-			return ResponseEntity.status(HttpStatus.CREATED).body(new UserDto(user));
-		}
+		userUpdateService.updateUser(id, userDto);
+		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
 	@DeleteMapping("/{id}")

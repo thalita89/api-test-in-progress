@@ -19,6 +19,7 @@ public class UserDto {
 	public UserDto() {
 
 	}
+
 	// constructor (used to not need to generate the setters)
 	public UserDto(User user) {
 		this.id = user.getId();
@@ -49,13 +50,13 @@ public class UserDto {
 		return dateOfBirth;
 	}
 
-	//from user constructor
+	// from user constructor
 	public User convert() {
 		return new User(id, userName, emailAddresses, cpf, dateOfBirth);
 	}
-	
-	//SERVICE
-	//from user constructor
+
+	// SERVICE
+	// from user constructor
 	// Java8
 	// map - to convert from UserDto to User
 	// UserDto::new - calls the constructor that takes the user as a parameter
@@ -64,7 +65,7 @@ public class UserDto {
 	public static List<UserDto> convert(List<User> users) {
 		return users.stream().map(UserDto::new).collect(Collectors.toList());
 	}
-	
+
 	public User update(Long id, UserRepository userRepository) {
 		User user = userRepository.getOne(id);
 		user.setUserName(this.userName);
@@ -73,5 +74,4 @@ public class UserDto {
 		user.setDateOfBirth(this.dateOfBirth);
 		return user;
 	}
-	
 }

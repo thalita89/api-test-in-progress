@@ -1,26 +1,24 @@
 package com.test.test.service;
 
-import java.time.LocalDate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import com.test.test.model.User;
+import com.test.test.controller.dto.UserDto;
 import com.test.test.repository.UserRepository;
+import com.test.test.validation.BusinessException;
 
-//to update - PUT
-//not used yet
+@Service
 public class UserUpdateService {
 
-	private String userName;
-	private String emailAddresses;
-	private Long cpf;
-	private LocalDate dateOfBirth;
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private ValidationService validationService;
 
-	public User update(Long id, UserRepository userRepository) {
-		User user = userRepository.getOne(id);
-		user.setUserName(this.userName);
-		user.setEmailAddresses(this.emailAddresses);
-		user.setCpf(this.cpf);
-		user.setDateOfBirth(this.dateOfBirth);
-		return user;
+	public UserDto updateUser(Long id, UserDto userDto) throws BusinessException {
+
+		userRepository.findById(id);
+		validationService.validationUser(userDto);
+		return new UserDto(userDto.update(id, userRepository));
 	}
-
 }
