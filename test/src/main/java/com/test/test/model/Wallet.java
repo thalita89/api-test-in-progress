@@ -56,6 +56,7 @@ public class Wallet {
 		this.valueAccount = valueAccount;
 	}
 
+
 	public User getUser() {
 		return user;
 	}
@@ -63,5 +64,5 @@ public class Wallet {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
+	
 }

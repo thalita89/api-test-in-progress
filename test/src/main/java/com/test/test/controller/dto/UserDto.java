@@ -66,6 +66,7 @@ public class UserDto {
 		return users.stream().map(UserDto::new).collect(Collectors.toList());
 	}
 
+	// service
 	public User update(Long id, UserRepository userRepository) {
 		User user = userRepository.getOne(id);
 		user.setUserName(this.userName);

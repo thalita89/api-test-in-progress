@@ -7,4 +7,3 @@ public interface IUserValidation {
 	//all interface method is public, because this, doesn't need put "public"
 	void validatedUser(UserDto userDto);	
 }
- 

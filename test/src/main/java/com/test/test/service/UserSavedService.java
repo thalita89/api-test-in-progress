@@ -8,7 +8,6 @@ import com.test.test.model.User;
 import com.test.test.repository.UserRepository;
 import com.test.test.validation.BusinessException;
 
-//ok
 @Service
 public class UserSavedService {
 	
