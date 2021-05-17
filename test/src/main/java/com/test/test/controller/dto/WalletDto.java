@@ -16,7 +16,7 @@ public class WalletDto {
 	}
 
 	public WalletDto(Wallet wallet) {
-		this.id = wallet.getId();
+		this.id = wallet.getWalletId();
 		this.valueAccount = wallet.getValueAccount();
 	}
 

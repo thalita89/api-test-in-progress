@@ -15,7 +15,7 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long userId;
 
 	private String userName;
 	private String emailAddresses;
@@ -26,7 +26,7 @@ public class User {
 
 	// client by wallet
 	@OneToOne(mappedBy = "user")
-	@JoinColumn(name = "wallet_id", unique = true, nullable = false)
+	@JoinColumn(name = "wallet_walletId", unique = true, nullable = false)
 	private Wallet wallet;
 
 	// constructor default
@@ -34,16 +34,16 @@ public class User {
 	}
 
 	// constructor to POST
-	public User(Long id, String userName, String emailAddresses, Long cpf, LocalDate dateOfBirth) {
-		this.id = id;
+	public User(Long userId, String userName, String emailAddresses, Long cpf, LocalDate dateOfBirth) {
+		this.userId = userId;
 		this.userName = userName;
 		this.emailAddresses = emailAddresses;
 		this.cpf = cpf;
 		this.dateOfBirth = dateOfBirth;
 	}
 
-	public Long getId() {
-		return id;
+	public Long getUserId() {
+		return userId;
 	}
 
 	public String getUserName() {
@@ -62,8 +62,8 @@ public class User {
 		return dateOfBirth;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public Wallet getWallet() {

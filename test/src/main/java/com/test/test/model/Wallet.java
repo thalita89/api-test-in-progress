@@ -16,21 +16,21 @@ public class Wallet {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long walletId;
 
 	@Column(precision = 10, scale = 2)
 	private BigDecimal valueAccount = BigDecimal.ZERO;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_id", unique = true, nullable = false)
+	@JoinColumn(name = "user_userId", unique = true, nullable = false)
 	private User user;
 
 	public Wallet() {
 	}
 
 	// constructor to PUT UserController
-	public Wallet(Long id, BigDecimal valueAccount, User user) {
-		this.id = id;
+	public Wallet(Long walletId, BigDecimal valueAccount, User user) {
+		this.walletId = walletId;
 		this.valueAccount = valueAccount;
 		this.user = user;
 	}
@@ -40,12 +40,12 @@ public class Wallet {
 		this.valueAccount = valueAccount;
 	}
 
-	public Long getId() {
-		return id;
+	public Long getWalletId() {
+		return walletId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setWalletId(Long walletId) {
+		this.walletId = walletId;
 	}
 
 	public BigDecimal getValueAccount() {

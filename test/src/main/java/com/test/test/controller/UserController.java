@@ -20,12 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.test.test.controller.dto.UserDto;
 import com.test.test.model.User;
 import com.test.test.repository.UserRepository;
+import com.test.test.service.UserGetByIdService;
 import com.test.test.service.UserSavedService;
 import com.test.test.service.UserUpdateService;
 import com.test.test.validation.BusinessException;
 
+//SOLID? not yet
 @RestController
-@RequestMapping("/user") // endpoint, when used you can define the HTTP verb post or get
+@RequestMapping("/users") // endpoint, when used you can define the HTTP verb post or get
 public class UserController {
 
 	@Autowired
@@ -34,6 +36,8 @@ public class UserController {
 	private UserSavedService userSavedService;
 	@Autowired
 	private UserUpdateService userUpdateService;
+	@Autowired
+	private UserGetByIdService userGetByIdService;
 
 	@GetMapping
 	public List<UserDto> listUser(@RequestBody(required = false) User user) {
@@ -46,10 +50,10 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<User> searchUserId(@PathVariable Long id) {
-		return userRepository.findById(id).map(resp -> ResponseEntity.ok(resp))
-				.orElse(ResponseEntity.notFound().build());
+	//check
+	@GetMapping("/{userId}")
+	public ResponseEntity<UserDto> searchUserId(@PathVariable Long userId) {
+		return userGetByIdService.userGetById(userId);
 	}
 
 	// change to @RequestBody later
@@ -59,17 +63,17 @@ public class UserController {
 				.orElse(ResponseEntity.notFound().build());
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping("/{userId}")
 	@Transactional
-	public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto userDto)
+	public ResponseEntity<UserDto> updateUser(@PathVariable Long userId, @RequestBody UserDto userDto)
 			throws BusinessException {
 
-		userUpdateService.updateUser(id, userDto);
+		userUpdateService.updateUser(userId, userDto);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
-	@DeleteMapping("/{id}")
-	public void remove(@PathVariable Long id) {
-		userRepository.deleteById(id);
+	@DeleteMapping("/{userId}")
+	public void remove(@PathVariable Long userId) {
+		userRepository.deleteById(userId);
 	}
 }

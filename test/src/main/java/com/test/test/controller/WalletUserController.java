@@ -24,6 +24,7 @@ import com.test.test.model.Wallet;
 import com.test.test.repository.WalletRepository;
 import com.test.test.service.DepositValueAccountWalletService;
 import com.test.test.service.WalletService;
+import com.test.test.service.WalletUserGetByIdService;
 import com.test.test.service.WithdrawValueAccountWalletService;
 import com.test.test.validation.BusinessException;
 
@@ -40,49 +41,60 @@ public class WalletUserController {
 	private DepositValueAccountWalletService depositValueAccountWalletService;
 	@Autowired
 	private WithdrawValueAccountWalletService withdrawValueAccountWalletService;
+	@Autowired
+	private WalletUserGetByIdService walletUserGetByIdService;
 
 	@GetMapping
 	public List<WalletDto> listWallet(@RequestBody(required = false) Wallet wallet) {
 		return WalletDto.convert(walletRepository.findAll());
 	}
 
+	//check
 	// include cpf validation
-	@GetMapping("/{id}")
-	public ResponseEntity<Wallet> searchWalletId(@PathVariable Long id) {
-		return walletRepository.findById(id).map(resp -> ResponseEntity.ok(resp))
-				.orElse(ResponseEntity.notFound().build());
+	@GetMapping("/{walletId}")
+	public ResponseEntity<WalletDto> searchWalletId(@PathVariable Long walletId) {
+		return walletUserGetByIdService.walletUserGetById(walletId);
 	}
 
 	// add valueAccount
-	@PutMapping("/add/{id}")
+	@PutMapping("/add/{walletId}")
 	@Transactional
-	public ResponseEntity<WalletDto> plusValueWallet(@PathVariable Long id,
+	public ResponseEntity<WalletDto> plusValueWallet(@PathVariable Long walletId,
 			@RequestBody @Valid UpdateWalletDto updateWalletDto) throws BusinessException {
-		depositValueAccountWalletService.addValueToWallet(id, updateWalletDto);
+		depositValueAccountWalletService.addValueToWallet(walletId, updateWalletDto);
 		return ResponseEntity.ok().build();
 	}
 
 	// withdraw valueAccount
-	@PutMapping("/withdraw/{id}")
+	@PutMapping("/withdraw/{walletId}")
 	@Transactional
-	public ResponseEntity<WalletDto> subtractedValueWallet(@PathVariable Long id,
+	public ResponseEntity<WalletDto> subtractedValueWallet(@PathVariable Long walletId,
 			@RequestBody @Valid UpdateWalletDto updateWalletDto) throws BusinessException {
-		withdrawValueAccountWalletService.withdrawValueToWallet(id, updateWalletDto);
+		withdrawValueAccountWalletService.withdrawValueToWallet(walletId, updateWalletDto);
+		return ResponseEntity.ok().build();
+	}
+
+	// withdraw valueAccount
+	@PutMapping("/transfers/{walletId}/{UserId}")
+	@Transactional
+	public ResponseEntity<WalletDto> transfersValueWallet(@PathVariable Long walletId,
+			@RequestBody @Valid UpdateWalletDto updateWalletDto) throws BusinessException {
+		withdrawValueAccountWalletService.withdrawValueToWallet(walletId, updateWalletDto);
 		return ResponseEntity.ok().build();
 	}
 
 	// created new wallet
-	@PostMapping("/user/{id}")
+	@PostMapping("/users/{userId}")
 	@Transactional
-	public ResponseEntity<?> saveOrUpdateUser(@PathVariable Long id, @RequestBody UserDto userDto, WalletDto walletDto)
+	public ResponseEntity<?> saveOrUpdateUser(@PathVariable Long userId, @RequestBody UserDto userDto, WalletDto walletDto)
 			throws BusinessException {
-		walletService.newUserWallet(userDto, id, walletDto);
+		walletService.newUserWallet(userDto, userId, walletDto);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
 	// include cpf validation
-	@DeleteMapping("/{id}")
-	public void remove(@PathVariable Long id) {
-		walletRepository.deleteById(id);
+	@DeleteMapping("/{walletId}")
+	public void remove(@PathVariable Long walletId) {
+		walletRepository.deleteById(walletId);
 	}
 }

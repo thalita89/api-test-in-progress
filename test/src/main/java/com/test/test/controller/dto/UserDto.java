@@ -22,7 +22,7 @@ public class UserDto {
 
 	// constructor (used to not need to generate the setters)
 	public UserDto(User user) {
-		this.id = user.getId();
+		this.id = user.getUserId();
 		this.userName = user.getUserName();
 		this.emailAddresses = user.getEmailAddresses();
 		this.cpf = user.getCpf();
