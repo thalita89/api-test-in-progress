@@ -4,24 +4,25 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.test.test.model.Currency;
 import com.test.test.model.User;
 import com.test.test.model.Wallet;
 
 public class WalletDto {
 
-	private Long id;
+	private Long walletId;
 	private BigDecimal valueAccount = BigDecimal.ZERO;
 
 	public WalletDto() {
 	}
 
 	public WalletDto(Wallet wallet) {
-		this.id = wallet.getWalletId();
+		this.walletId = wallet.getWalletId();
 		this.valueAccount = wallet.getValueAccount();
 	}
 
-	public Long getId() {
-		return id;
+	public Long getWalletId() {
+		return walletId;
 	}
 
 	public BigDecimal getValueAccount() {
@@ -36,7 +37,11 @@ public class WalletDto {
 		return new Wallet(valueAccount);
 	}
 
-	public Wallet convert(User user) {
-		return new Wallet(id, valueAccount, user);
+	public Wallet convert(User user, Currency currency) {
+		return new Wallet(walletId, valueAccount, user, currency);
 	}
+
+	//public Wallet convert(User user) {
+		//return new Wallet(id, valueAccount, user);
+	//}
 }

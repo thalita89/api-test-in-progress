@@ -10,7 +10,7 @@ import com.test.test.repository.UserRepository;
 // refactor later
 public class UserDto {
 
-	private Long id;
+	private Long userId;
 	private String userName;
 	private String emailAddresses;
 	private Long cpf;
@@ -22,7 +22,7 @@ public class UserDto {
 
 	// constructor (used to not need to generate the setters)
 	public UserDto(User user) {
-		this.id = user.getUserId();
+		this.userId = user.getUserId();
 		this.userName = user.getUserName();
 		this.emailAddresses = user.getEmailAddresses();
 		this.cpf = user.getCpf();
@@ -31,7 +31,7 @@ public class UserDto {
 
 	// don't need setters, because this is provided by user class
 	public Long getId() {
-		return id;
+		return userId;
 	}
 
 	public String getUserName() {
@@ -52,7 +52,7 @@ public class UserDto {
 
 	// from user constructor
 	public User convert() {
-		return new User(id, userName, emailAddresses, cpf, dateOfBirth);
+		return new User(userId, userName, emailAddresses, cpf, dateOfBirth);
 	}
 
 	// SERVICE
@@ -67,8 +67,8 @@ public class UserDto {
 	}
 
 	// service
-	public User update(Long id, UserRepository userRepository) {
-		User user = userRepository.getOne(id);
+	public User update(Long userId, UserRepository userRepository) {
+		User user = userRepository.getOne(userId);
 		user.setUserName(this.userName);
 		user.setEmailAddresses(this.emailAddresses);
 		user.setCpf(this.cpf);

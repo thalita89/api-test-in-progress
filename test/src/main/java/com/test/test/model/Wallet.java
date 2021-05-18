@@ -1,14 +1,18 @@
 package com.test.test.model;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -25,17 +29,24 @@ public class Wallet {
 	@JoinColumn(name = "user_userId", unique = true, nullable = false)
 	private User user;
 
+	@ManyToOne
+	@JoinColumn(name = "currency_currencyId", unique = true, nullable = false)
+	private Currency currency;
+
+	@OneToMany(mappedBy = "wallet", fetch = FetchType.LAZY)
+    private List<Transaction> transactions;
+
 	public Wallet() {
 	}
 
-	// constructor to PUT UserController
-	public Wallet(Long walletId, BigDecimal valueAccount, User user) {
+	// constructor to POST UserController
+	public Wallet(Long walletId, BigDecimal valueAccount, User user, Currency currency) {
 		this.walletId = walletId;
 		this.valueAccount = valueAccount;
 		this.user = user;
+		this.currency = currency;
 	}
 
-	// constructor to POST/PUT
 	public Wallet(BigDecimal valueAccount) {
 		this.valueAccount = valueAccount;
 	}
@@ -55,14 +66,29 @@ public class Wallet {
 	public void setValueAccount(BigDecimal valueAccount) {
 		this.valueAccount = valueAccount;
 	}
-
-
+	
 	public User getUser() {
 		return user;
 	}
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public Currency getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(Currency currency) {
+		this.currency = currency;
+	}
+
+	public List<Transaction> getTransactions() {
+		return transactions;
+	}
+
+	public void setTransactions(List<Transaction> transactions) {
+		this.transactions = transactions;
 	}
 	
 }
