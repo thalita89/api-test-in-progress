@@ -23,9 +23,5 @@ public class TransactionType {
 	public String getTransactionTypeId() {
 		return transactionTypeId;
 	}
-
-	public void setTransactionTypeId(String transactionTypeId) {
-		this.transactionTypeId = transactionTypeId;
-	}
     
 }

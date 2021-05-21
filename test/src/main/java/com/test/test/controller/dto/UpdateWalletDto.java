@@ -23,13 +23,5 @@ public class UpdateWalletDto {
 	public Long getCpf() {
 		return cpf;
 	}
-
-	public void setCpf(Long cpf) {
-		this.cpf = cpf;
-	}
-
-	public void setValueAccount(BigDecimal valueAccount) {
-		this.valueAccount = valueAccount;
-	}
 	
 }

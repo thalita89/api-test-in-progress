@@ -17,9 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.test.test.controller.dto.CurrencyDto;
+import com.test.test.controller.dto.CreateWalletDto;
 import com.test.test.controller.dto.UpdateWalletDto;
-import com.test.test.controller.dto.UserDto;
 import com.test.test.controller.dto.WalletDto;
 import com.test.test.model.Wallet;
 import com.test.test.repository.WalletRepository;
@@ -75,23 +74,12 @@ public class WalletUserController {
 		return ResponseEntity.ok().build();
 	}
 
-	// not used yet
-	// withdraw valueAccount
-	@PutMapping("/transfers/{walletId}/{UserId}")
-	@Transactional
-	public ResponseEntity<WalletDto> transfersValueWallet(@PathVariable Long walletId,
-			@RequestBody @Valid UpdateWalletDto updateWalletDto) throws BusinessException {
-		withdrawValueAccountWalletService.withdrawValueToWallet(walletId, updateWalletDto);
-		return ResponseEntity.ok().build();
-	}
-
-	// almost 
-	// created new wallet and new currency
+	// created new wallet
 	@PostMapping("/users/{userId}")
 	@Transactional
-	public ResponseEntity<?> saveOrUpdateUser(@PathVariable Long userId, @RequestBody UserDto userDto, WalletDto walletDto, CurrencyDto currencyDto)
+	public ResponseEntity<?> saveOrUpdateUser(@PathVariable Long userId, @RequestBody CreateWalletDto createWalletDto)
 			throws BusinessException {
-		walletService.newUserWallet(userDto, userId, walletDto, currencyDto);
+		walletService.newUserWallet(createWalletDto.getUser(), createWalletDto.getCurrencyName(),userId);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 

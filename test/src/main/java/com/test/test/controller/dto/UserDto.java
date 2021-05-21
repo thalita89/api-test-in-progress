@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import com.test.test.model.User;
 import com.test.test.repository.UserRepository;
 
-// refactor later
+//SOLID? not yet
 public class UserDto {
 
 	private Long userId;
@@ -17,7 +17,6 @@ public class UserDto {
 	private LocalDate dateOfBirth;
 
 	public UserDto() {
-
 	}
 
 	// constructor (used to not need to generate the setters)

@@ -27,7 +27,7 @@ import com.test.test.validation.BusinessException;
 
 //SOLID? not yet
 @RestController
-@RequestMapping("/users") // endpoint, when used you can define the HTTP verb post or get
+@RequestMapping("/users")
 public class UserController {
 
 	@Autowired
@@ -56,7 +56,7 @@ public class UserController {
 		return userGetByIdService.userGetById(userId);
 	}
 
-	// change to @RequestBody later
+	// change 'Long cpf' to @RequestBody later
 	@GetMapping("/cpf/{cpf}")
 	public ResponseEntity<User> searchUserCpf(@PathVariable Long cpf) {
 		return userRepository.findByCpf(cpf).map(resp -> ResponseEntity.ok(resp))

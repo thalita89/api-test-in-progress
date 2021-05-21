@@ -11,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -25,13 +24,11 @@ public class Wallet {
 	@Column(precision = 10, scale = 2)
 	private BigDecimal valueAccount = BigDecimal.ZERO;
 
+	private String currencyName;
+
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_userId", unique = true, nullable = false)
 	private User user;
-
-	@ManyToOne
-	@JoinColumn(name = "currency_currencyId", unique = true, nullable = false)
-	private Currency currency;
 
 	@OneToMany(mappedBy = "wallet", fetch = FetchType.LAZY)
     private List<Transaction> transactions;
@@ -39,19 +36,27 @@ public class Wallet {
 	public Wallet() {
 	}
 
+	public String getCurrencyName() {
+		return currencyName;
+	}
+
+	public void setCurrencyName(String currencyName) {
+		this.currencyName = currencyName;
+	}
+
 	// constructor to POST UserController
-	public Wallet(Long walletId, BigDecimal valueAccount, User user, Currency currency) {
+	public Wallet(Long walletId, BigDecimal valueAccount, User user, String currencyName) {
 		this.walletId = walletId;
 		this.valueAccount = valueAccount;
+		this.currencyName = currencyName;
 		this.user = user;
-		this.currency = currency;
 	}
 
 	public Wallet(BigDecimal valueAccount) {
 		this.valueAccount = valueAccount;
 	}
 
-	public Long getWalletId() {
+    public Long getWalletId() {
 		return walletId;
 	}
 
@@ -75,13 +80,6 @@ public class Wallet {
 		this.user = user;
 	}
 
-	public Currency getCurrency() {
-		return currency;
-	}
-
-	public void setCurrency(Currency currency) {
-		this.currency = currency;
-	}
 
 	public List<Transaction> getTransactions() {
 		return transactions;
